@@ -84,3 +84,17 @@ $routes->group('remisi', ['filter'=>'pdnislogin'], function($routes) {
     //$routes->match(['GET','POST'], 'data_json', 'RemisiController::data_json');
     $routes->post('data_json', 'RemisiController::data_json');
 });
+
+// LAPORAN PER MURID
+$routes->group('laporanmurid', ['filter'=>'pdnislogin'], function($routes) {
+    $routes->get('/', 'LaporanMuridController::index');
+    $routes->post('data_json', 'LaporanMuridController::data_json');
+    $routes->get('cetak/(:num)', 'LaporanMuridController::cetak/$1');
+});
+
+// LAPORAN PER KELAS
+$routes->group('laporankelas', ['filter'=>'pdnislogin'], function($routes) {
+    $routes->get('/', 'LaporanKelasController::index');
+    $routes->post('data_json', 'LaporanKelasController::data_json');
+    $routes->get('cetak/(:num)', 'LaporanKelasController::cetak/$1');
+});

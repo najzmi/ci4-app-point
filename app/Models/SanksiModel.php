@@ -25,4 +25,32 @@ class SanksiModel extends Model
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+
+    /**
+     * Hitung Jumlah Point
+     */
+    public function jmlPoint($id_murid)
+    {
+        return $this->selectSum('pelanggaran.pelanggaran_point', 'total_point')
+            ->join('murid', 'murid.id = sanksi.id_murid')
+            ->join('pelanggaran', 'pelanggaran.id = sanksi.id_pelanggaran')
+            ->where('sanksi.id_murid', $id_murid)
+            ->first()->total_point ?? 0;
+    }
+    /**
+     * Hitung Jumlah Point Untuk Diremisi
+     */
+    public function JmlPointUntukRemisi($id_murid, $tgl_end)
+    {
+        // Mundur 1 tahun 3 bulan dari tanggal sekarang
+        $tgl_start = date('Y-m-d', strtotime('-1 year -3 months'));
+    
+        return $this->selectSum('pelanggaran.pelanggaran_point', 'total_point')
+            ->join('murid', 'murid.id = sanksi.id_murid')
+            ->join('pelanggaran', 'pelanggaran.id = sanksi.id_pelanggaran')
+            ->where('sanksi.id_murid', $id_murid)
+            ->where('sanksi.tanggal >=', $tgl_start)
+            ->where('sanksi.tanggal <=', $tgl_end)
+            ->first()->total_point ?? 0;
+    }
 }

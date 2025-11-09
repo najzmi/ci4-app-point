@@ -25,4 +25,14 @@ class RemisiModel extends Model
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+
+    /**
+     * Hitung Jumlah Remisi
+     */
+    public function jmlRemisi($id_murid)
+    {
+        return $this->selectSum('remisi.jml_remisi', 'total_remisi')
+            ->where('remisi.id_murid', $id_murid)
+            ->first()->total_remisi ?? 0;
+    }
 }
