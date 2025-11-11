@@ -25,7 +25,7 @@ class KelasController extends BaseController
         $this->mainModel    = new KelasModel();
     }
 
-        public function index()
+    public function index()
     {
         $this->data['pdn_title']         = 'Data '.$this->pdnTitle;
         $this->data['pdn_url']           = $this->urlName;

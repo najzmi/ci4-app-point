@@ -98,3 +98,9 @@ $routes->group('laporankelas', ['filter'=>'pdnislogin'], function($routes) {
     $routes->post('data_json', 'LaporanKelasController::data_json');
     $routes->get('cetak/(:num)', 'LaporanKelasController::cetak/$1');
 });
+
+// POINT BESAR DIATAS 25 POINT
+$routes->group('pointlebih', ['filter'=>'pdnislogin'], function($routes) {
+    $routes->get('/', 'PointLebihController::index');
+    $routes->post('data_json', 'PointLebihController::data_json');
+});

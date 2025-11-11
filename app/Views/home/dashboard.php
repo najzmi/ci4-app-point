@@ -61,7 +61,7 @@
                 </div>
             </div>
             <!-- Content Row -->
-            <div class="row">
+            <div class="row mb-4">
                 <div class="col">
                     <div class="card border border-secondary-subtle">
                         <div class="card-body">
