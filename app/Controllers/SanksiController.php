@@ -304,7 +304,7 @@ class SanksiController extends BaseController
                 $no++;
                 $row = [];
                 $row[] = $no;
-                $row[] = $pDn->tanggal;
+                $row[] = pdn_tgl_default($pDn->tanggal);
                 $row[] = $pDn->murid_nis;
                 $row[] = $pDn->murid_nama;
                 $row[] = $pDn->kelas_nama.' - '.$pDn->kelas_subnama;

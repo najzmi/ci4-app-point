@@ -36,8 +36,8 @@ class LaporanKelasController extends BaseController
         return view($this->folderName.'/content', $this->data);
     }
 
-    function cetak($id){
-        if ($id === null) {
+    function cetak($idKelas){
+        if ($idKelas === null) {
             // Redirect atau tampilkan error
             return redirect()->to($this->urlName)->with('error', 'ID tidak ditemukan');
         }
@@ -47,24 +47,11 @@ class LaporanKelasController extends BaseController
         $this->data[$this->menuActive]      = 'active';
         $this->data[$this->subMenuActive]   = ['active','show'];
 
-        $this->data['dataMurid'] = $this->mainModel->getMuridResult($id);
+        $this->data['dataMurid'] = $this->mainModel->getMuridResult($idKelas);
+        $this->data['dataKelas'] = $this->mainModel->getKelas($idKelas);
 
         // Tampilkan Viewsnya
         return view($this->folderName.'/cetak', $this->data);
-    }
-
-    function hitung_point($idMurid){
-        if(empty($idMurid)){
-            return 'Kesalahan';
-        }
-
-        // Panggil Point Murid
-        $jmlPoint = $this->mainModel->getJmlPointMurid($idMurid);
-        //Jml Remisi
-        $jmlRemisi = $this->mainModel->getJmlRemisMurid($idMurid);
-
-        $hasil = $jmlPoint - $jmlRemisi;
-        return $hasil;
     }
 
     // JOSN DATATBLES

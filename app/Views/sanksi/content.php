@@ -50,6 +50,10 @@
                             "sClass": "text-center",
                             "orderable": false,
                         },
+                        {
+                            "targets": [6],
+                            "sClass": "text-center"
+                        },
                     ],
                 });
 

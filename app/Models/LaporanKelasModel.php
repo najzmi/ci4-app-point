@@ -13,6 +13,7 @@ class LaporanKelasModel extends Model
     protected $table            = null;  // opsional, bisa diatur dalam tiap method
     protected $tbViewMurid      = 'v_murid';
     protected $tbViewSanksi     = 'v_sanksi';
+    protected $tbKelas          = 'kelas';
 
     // tidak ingin model ini bisa digunakan untuk save, insert, update, dan delete
     public function insert($data = null, bool $returnID = true)
@@ -26,6 +27,18 @@ class LaporanKelasModel extends Model
     public function delete($id = null, bool $purge = false)
     {
         throw new \RuntimeException('Model ini hanya digunakan untuk READ.');
+    }
+
+    function getKelas($idKelas){
+        if (empty($idKelas)) {
+            throw new \InvalidArgumentException('ID Murid harus diisi.');
+        }
+
+        return $this->db->table($this->tbKelas)
+            ->select('id, kelas_nama, kelas_subnama')
+            ->where('id', $idKelas)
+            ->get()
+            ->getRowArray();
     }
 
     public function getMuridResult($idKelas){

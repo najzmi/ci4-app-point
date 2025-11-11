@@ -64,8 +64,8 @@ class LaporanMuridController extends BaseController
         $request = \Config\Services::request();
 
         // Konfigurasi datatables (fleksibel)
-        $table          = 'v_murid';
-        $column_order   = ['','murid_nis', 'murid_nama','kelas_nama'];
+        $table          = 'v_total_point';
+        $column_order   = ['','murid_nis', 'murid_nama','kelas_nama','jml_point','jml_remisi','total_point'];
         $column_search  = ['murid_nis', 'murid_nama','kelas_nama','kelas_subnama'];
         $order          = ['murid_nama' => 'asc'];
 
@@ -85,6 +85,9 @@ class LaporanMuridController extends BaseController
                 $row[] = $pDn->murid_nis;
                 $row[] = $pDn->murid_nama;
                 $row[] = $pDn->kelas_nama.' - '.$pDn->kelas_subnama;
+                $row[] = $pDn->jml_point;
+                $row[] = $pDn->jml_remisi;
+                $row[] = $pDn->total_point;
                 $row[] = '
                     <a href="'.$this->urlName.'/cetak/'.$pDn->id.'" class="btn btn-sm btn-success shadow-sm" title="Cetak" target="_blank">
                         <i class="fas fa-print"></i> Cetak

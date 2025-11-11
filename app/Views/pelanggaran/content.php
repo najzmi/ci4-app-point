@@ -16,7 +16,7 @@
                                         <tr>
                                             <th width="5%">No</th>
                                             <th class="text-center">Pelanggaran Nama</th>
-                                            <th class="text-center">JML Point</th>
+                                            <th width="12%" class="text-center">JML Point</th>
                                             <th width="12%">Aksi</th>
                                         </tr>
                                     </thead>
@@ -46,6 +46,10 @@
                             "sClass": "text-center",
                             "orderable": false,
                         },
+                        {
+                            "targets": [2],
+                            "sClass": "text-center"
+                        }
                     ],
                 });
 

@@ -131,7 +131,7 @@
             </tr>
             <tr>
                 <td class="label">Kelas</td>
-                <td>: NAMA KELAS</td>
+                <td>: <?= $dataKelas['kelas_nama'];?> <?= $dataKelas['kelas_subnama'];?></td>
             </tr>
         </table>
 
@@ -148,6 +148,7 @@
             <tbody>
                 <?php
                 $no = 0;
+                if (is_array($dataMurid) || is_object($dataMurid)) {
                 foreach ($dataMurid as $row){
                     $no ++;
                 ?>
@@ -157,7 +158,7 @@
                         <td><?=$row['murid_nama'];?></td>
                         <td style="text-align:center;" ><?=$row['total_point'];?></td>
                     </tr>
-                <?php } ?>
+                <?php } } ?>
             </tbody>
         </table>
         <table class="ttd" width="100%" style="width:100%; margin-top: 60px;">

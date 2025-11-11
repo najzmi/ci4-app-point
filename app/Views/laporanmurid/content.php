@@ -16,6 +16,9 @@
                                             <th class="text-center">NIS Murid</th>
                                             <th class="text-center">Nama Murid</th>
                                             <th class="text-center">Kelas</th>
+                                            <th class="text-center">Jml Point</th>
+                                            <th class="text-center">Jml Remisi</th>
+                                            <th class="text-center">Total Point</th>
                                             <th width="12%">Aksi</th>
                                         </tr>
                                     </thead>
@@ -41,10 +44,14 @@
                     },
                     columnDefs: [
                         {
-                            "targets": [0,4],
+                            "targets": [0,7],
                             "sClass": "text-center",
                             "orderable": false,
                         },
+                        {
+                            "targets": [4,5,6],
+                            "sClass": "text-center"
+                        }
                     ],
                 });
 

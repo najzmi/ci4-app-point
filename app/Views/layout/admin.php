@@ -183,7 +183,7 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Page rendered in <strong>{elapsed_time}</strong> seconds. Copyright &copy; Pudin <?=date('Y');?></span>
+                        <span>Page rendered in <strong>{elapsed_time}</strong> seconds, {memory_usage} MB of memory, <?= CodeIgniter\CodeIgniter::CI_VERSION ?> Copyright &copy; Pudin <?=date('Y');?></span>
                     </div>
                 </div>
             </footer>

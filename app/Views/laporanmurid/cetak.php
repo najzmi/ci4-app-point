@@ -160,6 +160,7 @@
                 <!-- ==== PHP Loop Data ==== -->
                 <?php
                 $no = 0;
+                if (is_array($pdn_dataSanksi) || is_object($pdn_dataSanksi)) {
                 foreach($pdn_dataSanksi as $row) {
                     $no++;
                 ?>
@@ -169,7 +170,7 @@
                         <td><?= $row->pelanggaran_nama; ?></td>
                         <td style="text-align:center;"><?= $row->pelanggaran_point; ?></td>
                     </tr>
-                <?php } ?>
+                <?php } } ?>
                 <!-- ==== JUMLAH POINT ==== -->
                  <tr>
                     <td colspan="3" style="text-align:right;">Jumlah Point :</td>
@@ -182,6 +183,7 @@
                 <!-- ==== PHP Loop Data ==== -->
                 <?php
                 $no = 0;
+                if (is_array($pdn_dataRemisi) || is_object($pdn_dataRemisi)) {
                 foreach($pdn_dataRemisi as $row) {
                     $no++;
                 ?>
@@ -191,7 +193,7 @@
                         <td><?= $row->keterangan; ?></td>
                         <td style="text-align:center;">- <?= $row->jml_remisi; ?></td>
                     </tr>
-                <?php } ?>
+                <?php } } ?>
                 <!-- ==== JUMLAH REMISI ==== -->
                 <tr>
                     <td colspan="3" style="text-align:right;">Jumlah Remisi :</td>
