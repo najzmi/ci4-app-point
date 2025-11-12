@@ -11,7 +11,12 @@ $routes->get('/', 'Bo::login');
 $routes->match(['GET','POST'],'/login', 'Bo::login');
 $routes->get('/logout', 'Bo::logout');
 // DASHBOARD
-$routes->get('/dashboard', 'Dashboard::index', ['filter'=>'pdnislogin']);
+//$routes->get('/dashboard', 'Dashboard::index', ['filter'=>'pdnislogin']);
+$routes->group('dashboard', ['filter'=>'pdnislogin'], function($routes) {
+    $routes->get('/', 'Dashboard::index');
+    //$routes->get('grafik_kelas', 'Dashboard::grafik_kelas');
+    $routes->post('grafik_kelas', 'Dashboard::grafik_kelas');
+});
 // USERS
 $routes->group('users', ['filter'=>'pdnislogin'], function($routes) {
     $routes->get('/', 'UsersController::index');
@@ -103,4 +108,5 @@ $routes->group('laporankelas', ['filter'=>'pdnislogin'], function($routes) {
 $routes->group('pointlebih', ['filter'=>'pdnislogin'], function($routes) {
     $routes->get('/', 'PointLebihController::index');
     $routes->post('data_json', 'PointLebihController::data_json');
+    $routes->get('cetak', 'PointLebihController::cetak');
 });

@@ -3,6 +3,8 @@
         <?= $this->section('content') ?>
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h3 mb-0 text-gray-800"><?php echo isset($pdn_title) ? $pdn_title	: 'Administrator | Pudin Project'; ?></h1>
+                <a href="<?= $pdn_url.'/cetak' ?>" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" target="_blank"><i
+                        class="fas fa-print fa-sm text-white-50"></i> Cetak</a>
             </div>
             <div class="row">
                 <div class="col">

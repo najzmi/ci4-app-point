@@ -96,7 +96,7 @@
                         <h6 class="collapse-header">Data Laporan :</h6>
                         <a class="collapse-item <?= isset($menulaporanmurid) ? $menulaporanmurid: ''; ?>" href="<?= base_url('laporanmurid'); ?>">Per Murid</a>
                         <a class="collapse-item <?= isset($menulaporankelas) ? $menulaporankelas: ''; ?>" href="<?= base_url('laporankelas'); ?>">Per Kelas</a>
-                        <a class="collapse-item <?= isset($menupointlebih) ? $menupointlebih: ''; ?>" href="<?= base_url('pointlebih'); ?>">Point Tingi</a>
+                        <a class="collapse-item <?= isset($menupointlebih) ? $menupointlebih: ''; ?>" href="<?= base_url('pointlebih'); ?>">Point Tinggi</a>
                     </div>
                 </div>
             </li>

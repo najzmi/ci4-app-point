@@ -66,7 +66,7 @@
                     <div class="card border border-secondary-subtle">
                         <div class="card-body">
                             <div class="chart-area">
-                                <canvas id="myAreaChart"></canvas>
+                                <canvas id="grafikKelas"></canvas>
                             </div>
                         </div>
                     </div>
@@ -76,6 +76,76 @@
         <?= $this->section('contentcode') ?>
             <script src="<?=base_url('assets');?>/gudang/chart.js/Chart.min.js"></script>
             <script>
-                
-            </script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const ctx = document.getElementById('grafikKelas').getContext('2d');
+                    let grafikKelasChart;
+
+                    async function getPudinSatu() {
+                        try {
+                            const response = await fetch("<?= base_url($pdn_url . '/grafik_kelas') ?>", {
+                                method: "POST"
+                            });
+                            const data = await response.json();
+
+                            const labels = data.map(item => item.nama);
+                            const values = data.map(item => item.jmlpoint);
+
+                            if (!grafikKelasChart) {
+                                // Buat chart pertama kali
+                                grafikKelasChart = new Chart(ctx, {
+                                    type: 'bar',
+                                    data: {
+                                        labels: labels,
+                                        datasets: [{
+                                            label: 'Total Point Kelas',
+                                            data: values,
+                                            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                            borderColor: 'rgba(54, 162, 235, 1)',
+                                            borderWidth: 1
+                                        }]
+                                    },
+                                    options: {
+                                        responsive: true,
+                                        maintainAspectRatio: false,
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true
+                                            },
+                                            x: {
+                                                ticks: {
+                                                    autoSkip: false,
+                                                    maxRotation: 45,
+                                                    minRotation: 45
+                                                }
+                                            }
+                                        },
+                                        plugins: {
+                                            legend: {
+                                                position: 'top'
+                                            },
+                                            title: {
+                                                display: true,
+                                                text: 'Total Point per Kelas'
+                                            }
+                                        }
+                                    }
+                                });
+                            } else {
+                                // Update chart tanpa re-inisialisasi
+                                grafikKelasChart.data.labels = labels;
+                                grafikKelasChart.data.datasets[0].data = values;
+                                grafikKelasChart.update();
+                            }
+                        } catch (err) {
+                            console.error("Gagal ambil data grafik kelas:", err);
+                        }
+                    }
+
+                    // Load pertama kali
+                    getPudinSatu();
+
+                    // Auto-refresh setiap 6 menit (360000 ms)
+                    setInterval(getPudinSatu, 360000);
+                });
+                </script>
         <?= $this->endSection();?>

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\PointLebihModel;
 
 class PointLebihController extends BaseController
 {
@@ -13,6 +14,7 @@ class PointLebihController extends BaseController
     protected $subMenuActive;
     protected $pdnTitle;
     protected $folderName;
+    protected $mainModel;
 
     public function __construct()
     {
@@ -22,6 +24,7 @@ class PointLebihController extends BaseController
         $this->pdnTitle         = 'Point Tinggi';
         $this->urlName          = 'pointlebih';
         $this->folderName       = 'pointlebih';
+        $this->mainModel        = new PointLebihModel();
     }
 
     public function index()
@@ -33,16 +36,28 @@ class PointLebihController extends BaseController
         return view($this->folderName.'/content', $this->data);
     }
 
+    function cetak(){
+        $this->data['pdn_title']            = 'Data '.$this->pdnTitle;
+        $this->data['pdn_url']              = $this->urlName;
+        $this->data[$this->menuActive]      = 'active';
+        $this->data[$this->subMenuActive]   = ['active','show'];
+
+        $this->data['dataMurid'] = $this->mainModel->getMuridArray();
+
+        // Tampilkan Viewsnya
+        return view($this->folderName.'/cetak', $this->data);
+    }
+
     // JOSN DATATBLES
     public function data_json()
     {
         $request = \Config\Services::request();
 
         // Konfigurasi datatables (fleksibel)
-        $table          = 'v_total_point';
+        $table          = 'v_pointlebih';
         $column_order   = ['','murid_nis', 'murid_nama','kelas_nama','total_point'];
         $column_search  = ['murid_nis', 'murid_nama','kelas_nama','kelas_subnama'];
-        $order          = ['murid_nama' => 'asc'];
+        $order          = ['total_point' => 'asc'];
 
         $datamodel = new \App\Models\Datatables($request);
         $datamodel->setConfig($table, $column_order, $column_search, $order);

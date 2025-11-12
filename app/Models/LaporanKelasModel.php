@@ -43,7 +43,7 @@ class LaporanKelasModel extends Model
 
     public function getMuridResult($idKelas){
         if (empty($idKelas)) {
-            throw new \InvalidArgumentException('ID Murid harus diisi.');
+            throw new \InvalidArgumentException('ID Kelas harus diisi.');
         }
 
         $muridList = $this->db->table($this->tbViewMurid)

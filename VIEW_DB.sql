@@ -109,7 +109,40 @@ SELECT
   kelas_subnama,
   total_point
 FROM v_total_point
-WHERE total_point >= 25;
+WHERE total_point >= 25
+ORDER BY total_point DESC;
+
+-- TAMPILKAN POINT PER KELAS
+CREATE OR REPLACE VIEW v_point_kelas AS
+SELECT 
+    k.id AS id_kelas,
+    k.kelas_nama,
+    k.kelas_subnama,
+    IFNULL(SUM(pm.total_sanksi - rm.total_remisi), 0) AS total_point
+FROM kelas k
+LEFT JOIN (
+    SELECT 
+        m.id_kelas,
+        m.id AS id_murid,
+        IFNULL(SUM(p.pelanggaran_point), 0) AS total_sanksi
+    FROM murid m
+    LEFT JOIN sanksi s ON s.id_murid = m.id
+    LEFT JOIN pelanggaran p ON p.id = s.id_pelanggaran
+    GROUP BY m.id, m.id_kelas
+) AS pm ON pm.id_kelas = k.id
+LEFT JOIN (
+    SELECT 
+        m.id_kelas,
+        m.id AS id_murid,
+        IFNULL(SUM(r.jml_remisi), 0) AS total_remisi
+    FROM murid m
+    LEFT JOIN remisi r ON r.id_murid = m.id
+    GROUP BY m.id, m.id_kelas
+) AS rm ON rm.id_murid = pm.id_murid
+GROUP BY k.id, k.kelas_nama, k.kelas_subnama;
+
+
+
 
 -- DATABASE
 CREATE TABLE `kelas` (
