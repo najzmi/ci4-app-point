@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\PelanggaranModel;
+use App\Libraries\SimpleXLSX;
 
 class PelanggaranController extends BaseController
 {
@@ -205,6 +206,111 @@ class PelanggaranController extends BaseController
     {
         $this->mainModel->delete($id);
         return redirect()->to($this->urlName)->with('success', 'Data berhasil dihapus.');
+    }
+
+    // IMPORT DATA
+    public function import_xlsx()
+    {
+        helper('form');
+        $this->data['pdn_title']         = 'Import Data '.$this->pdnTitle;
+        $this->data['pdn_url']           = $this->urlName;
+        $this->data[$this->menuActive]   = 'active';
+
+        $this->data['berkas'] = [
+            'name'    => 'berkas',
+            'id'      => 'berkas',
+            'type'    => 'file',
+            'class'   => 'form-control',
+            'required'=> 'required',
+            'value'   => set_value('berkas'),
+        ];
+
+        if (! $this->request->is('post')) {
+            // Tampilkan Form Tambahnya
+            return view($this->folderName.'/import_xlsx', $this->data);
+        }else{
+            // Prosess POST Simpan data
+            $rules = [
+                'berkas' => [
+                    'label' => 'Berkas',
+                    'rules' => 'uploaded[berkas]|ext_in[berkas,xlsx]|max_size[berkas,4096]',
+                    'errors' => [
+                        'uploaded' => 'Berkas wajib diupload.',
+                        'ext_in'   => 'Format berkas harus .xlsx',
+                        'max_size' => 'Ukuran maksimal file adalah 4MB.',
+                    ]
+                ]
+            ];
+
+            $data_req = $this->request->getPost(array_keys($rules));
+            if (! $this->validateData($data_req, $rules)) {
+                // Kembalikan dan berikan informasi errornya
+                return view($this->folderName.'/import_xlsx', $this->data);
+            }else{
+
+                $file = $this->request->getFile('berkas');
+    
+                if ($file->isValid() && !$file->hasMoved()) {
+                    $path = $file->getTempName();
+            
+                    if ($xlsx = SimpleXLSX::parse($path)) {
+                        $dataInsert = [];
+                        $rowNumber = 1; // untuk notifikasi baris
+                        $emptyNamaRows = [];
+                        $emptyPoinRows = [];
+            
+                        foreach ($xlsx->rows() as $index => $row) {
+                            if ($index === 0) continue; // skip header
+                            $rowNumber++;
+                            $nama_pelanggaran       = $row[0] ?? null;
+                            $poin_pelanggaran       = $row[1] ?? null;
+
+                            if (empty($nama_pelanggaran)) {
+                                // Nama Pelanggaran kosong → hentikan proses
+                                $emptyNamaRows[] = $rowNumber;
+                                continue;
+                            }
+
+                            if (empty($poin_pelanggaran)) {
+                                // Nama Pelanggaran kosong → hentikan proses
+                                $emptyPoinRows[] = $rowNumber;
+                                continue;
+                            }
+            
+                            $dataInsert[] = [
+                                'pelanggaran_nama'   => $nama_pelanggaran,
+                                'pelanggaran_point'  => $poin_pelanggaran
+                            ];
+                        }
+
+                        if (!empty($emptyNamaRows)) {
+                            $rowsNama = implode(', ', $emptyNamaRows);
+                            //return redirect()->back()->with('error', "Import dihentikan. NIS kosong pada baris: $rows");
+                            return redirect()->to($this->urlName)->with('error', "Import dihentikan. NIS kosong pada baris: $rowsNama");
+                        }
+
+                        if (!empty($emptyPoinRows)) {
+                            $rowsPoin = implode(', ', $emptyPoinRows);
+                            //return redirect()->back()->with('error', "Import dihentikan. NIS kosong pada baris: $rows");
+                            return redirect()->to($this->urlName)->with('error', "Import dihentikan. NIS kosong pada baris: $rowsPoin");
+                        }
+            
+                        if (!empty($dataInsert)) {
+                            $this->mainModel->insertBatch($dataInsert);
+                            $count = count($dataInsert);
+                            //return redirect()->back()->with('message', "$count data berhasil diimport!");
+                            return redirect()->to($this->urlName)->with('success',"$count data berhasil diimport!");
+                        }
+                    } else {
+                        //return redirect()->back()->with('error', SimpleXLSX::parseError());
+                        return redirect()->to($this->urlName)->with('error', SimpleXLSX::parseError());
+                    }
+                } else {
+                    //return redirect()->back()->with('error', 'File tidak valid.');
+                    return redirect()->to($this->urlName)->with('error', 'File tidak valid.');
+                }
+            }
+        }
     }
 
     // JOSN DATATBLES

@@ -204,6 +204,9 @@ class KelasController extends BaseController
                 $row[] = $no;
                 $row[] = $pDn->kelas_nama;
                 $row[] = $pDn->kelas_subnama;
+                $row[] = 'ID : <span class="myIDKelas">'.$pDn->id.'</span> 
+                        <span class="copyBtn" style="cursor:pointer; margin-left:10px;" title="Copy ID Kelas">
+                        <i class="far fa-copy"></i></span>';
                 $row[] = '
                     <a href="'.$this->urlName.'/edit/'.$pDn->id.'" class="btn btn-sm btn-success shadow-sm" title="Edit">
                         <i class="fas fa-pencil-alt"></i>

@@ -30,6 +30,7 @@ SELECT
     tb1.tanggal,
     tb1.nama_pelapor,
     tb1.catatan,
+    tb1.file_foto,
     tb2.murid_nis,
     tb2.murid_nama,
     tb3.pelanggaran_nama,

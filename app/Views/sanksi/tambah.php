@@ -10,7 +10,7 @@
                 <div class="col-md-6">
                     <div class="card border shadow mb-4">
                         <div class="card-body">
-                            <?php   echo form_open($pdn_url.'/tambah', 'class="form" id="form"');
+                            <?php   echo form_open_multipart($pdn_url.'/tambah', 'class="form" id="form"');
                                     echo csrf_field();
                             ?>
                                 <div class="mb-3">
@@ -26,6 +26,13 @@
                                     <?= form_input($tanggal); ?>
                                     <?php if(service('validation')->getError('tanggal')){ ?>
                                         <div id="tanggal" class="form-text"><?= service('validation')->getError('tanggal') ?></div>
+                                    <?php } ?>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="berkas" class="form-label">Berkas</label>
+                                    <?= form_input($berkas); ?>
+                                    <?php if(service('validation')->getError('berkas')){ ?>
+                                        <div id="berkas" class="form-text"><?= service('validation')->getError('berkas') ?></div>
                                     <?php } ?>
                                 </div>
                                 <div class="mb-3">
@@ -47,4 +54,16 @@
                     </div>
                 </div>
             </div>
+        <?= $this->endSection();?>
+        <?= $this->section('contentcode') ?>
+        <script type="text/javascript" src="<?= base_url('assets/gudang/select2/select2.min.js'); ?>"></script>
+        <script type="text/javascript">
+            /*-- Select 2 --*/
+            $('#select1').select2({
+                    theme: 'bootstrap4',
+            });
+            $('#select2').select2({
+                    theme: 'bootstrap4',
+            });
+        </script>
         <?= $this->endSection();?>

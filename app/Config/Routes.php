@@ -61,6 +61,7 @@ $routes->group('murid', ['filter'=>'pdnislogin'], function($routes) {
     $routes->delete('hapus/(:num)', 'MuridController::hapus/$1');
     //$routes->match(['GET','POST'], 'data_json', 'MuridController::data_json');
     $routes->post('data_json', 'MuridController::data_json');
+    $routes->match(['GET','POST'], 'import_xlsx', 'MuridController::import_xlsx');
 });
 // PELANGARAN
 $routes->group('pelanggaran', ['filter'=>'pdnislogin'], function($routes) {
@@ -70,6 +71,7 @@ $routes->group('pelanggaran', ['filter'=>'pdnislogin'], function($routes) {
     $routes->delete('hapus/(:num)', 'PelanggaranController::hapus/$1');
     //$routes->match(['GET','POST'], 'data_json', 'PelanggaranController::data_json');
     $routes->post('data_json', 'PelanggaranController::data_json');
+    $routes->match(['GET','POST'], 'import_xlsx', 'PelanggaranController::import_xlsx');
 });
 // SANKSI
 $routes->group('sanksi', ['filter'=>'pdnislogin'], function($routes) {
@@ -79,6 +81,7 @@ $routes->group('sanksi', ['filter'=>'pdnislogin'], function($routes) {
     $routes->delete('hapus/(:num)', 'SanksiController::hapus/$1');
     //$routes->match(['GET','POST'], 'data_json', 'SanksiController::data_json');
     $routes->post('data_json', 'SanksiController::data_json');
+    $routes->get('(:num)/berkas', 'SanksiController::berkas/$1');
 });
 // REMISI
 $routes->group('remisi', ['filter'=>'pdnislogin'], function($routes) {
@@ -109,4 +112,11 @@ $routes->group('pointlebih', ['filter'=>'pdnislogin'], function($routes) {
     $routes->get('/', 'PointLebihController::index');
     $routes->post('data_json', 'PointLebihController::data_json');
     $routes->get('cetak', 'PointLebihController::cetak');
+});
+
+// PINDAH KELAS
+$routes->group('pindahkelas', ['filter'=>'pdnislogin'], function($routes) {
+    $routes->get('/', 'PindahKelasController::index');
+    $routes->post('data_json', 'PindahKelasController::data_json');
+    $routes->get('cetak', 'PindahKelasController::cetak');
 });

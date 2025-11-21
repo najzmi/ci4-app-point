@@ -54,7 +54,7 @@ class SanksiController extends BaseController
                 $resMurid[$row->id] = $row->murid_nis.' - '.$row->murid_nama;
             }
         }
-        $this->data['id_murid'] = form_dropdown('id_murid' ,$resMurid, '', ['id'=>'id_murid', 'class'=>'form-control']);
+        $this->data['id_murid'] = form_dropdown('id_murid' ,$resMurid, '', ['id'=>'select1', 'class'=>'form-control']);
 
         $resPelanggaran = [];
         if (is_array($dataPelanggaran) || is_object($dataPelanggaran)) {
@@ -62,7 +62,7 @@ class SanksiController extends BaseController
                 $resPelanggaran[$row->id] = $row->pelanggaran_nama.' - ( '.$row->pelanggaran_point.' )';
             }
         }
-        $this->data['id_pelanggaran'] = form_dropdown('id_pelanggaran' ,$resPelanggaran, '', ['id'=>'id_pelanggaran', 'class'=>'form-control']);
+        $this->data['id_pelanggaran'] = form_dropdown('id_pelanggaran' ,$resPelanggaran, '', ['id'=>'select2', 'class'=>'form-control']);
 
         $this->data['tanggal'] = [
             'name'    => 'tanggal',
@@ -87,6 +87,15 @@ class SanksiController extends BaseController
             'class'       => 'form-control',
             'value'       => set_value('catatan'),
         ]);
+
+        // BERKAS
+        $this->data['berkas'] = [
+            'name'    => 'berkas',
+            'id'      => 'berkas',
+            'type'    => 'file',
+            'class'   => 'form-control',
+            'value'   => set_value('berkas'),
+        ];
 
         if (! $this->request->is('post')) {
             // Tampilkan Form Tambahnya
@@ -116,7 +125,11 @@ class SanksiController extends BaseController
                         'min_length'  => 'Tanggal terlalu pendek.',
                         'max_length'  => 'Tanggal terlalu panjang.',
                     ]
-                ]
+                ],
+                'berkas' => [
+                    'label' => 'File',
+                    'rules' => 'if_exist|max_size[berkas,4096]|ext_in[berkas,jpg,png,jpeg]',
+                ],
             ];
 
             $data_req = $this->request->getPost(array_keys($rules));
@@ -124,13 +137,38 @@ class SanksiController extends BaseController
                 // Kembalikan dan berikan informasi errornya
                 return view($this->folderName.'/tambah', $this->data);
             }else{
+                // PROSES BERKAS
+                $pdnFile = $this->request->getFile('berkas');
+                $pdnNameFile = null; // default jika tidak upload file
+
+                // Jika file DIUPLOAD (error != 4)
+                if ($pdnFile && $pdnFile->getError() != 4) {
+
+                    // Pastikan file valid
+                    if (!$pdnFile->isValid()) {
+                        return redirect()->back()->with('error', $pdnFile->getErrorString());
+                    }
+
+                    // Ambil tanggal sekarang
+                    $pdnTglNow = date('Ymd');
+
+                    // Generate nama baru (random) & upload // random bawaan CI4
+                    $pdnNameRandom = $pdnFile->getRandomName();
+
+                    // Gabungkan tanggal + random name
+                    $pdnNameFile = $pdnTglNow . '-' . $pdnNameRandom;
+
+                    $pdnFile->move('uploads/bukti', $pdnNameFile);
+                }
+
                 // Prosess Simpan Data
                 $simpan_data = [
                     'id_murid'        => $this->request->getPost('id_murid'),
                     'id_pelanggaran'  => $this->request->getPost('id_pelanggaran'),
                     'tanggal'         => $this->request->getPost('tanggal'),
                     'nama_pelapor'    => $this->request->getPost('nama_pelapor'),
-                    'catatan'         => $this->request->getPost('catatan')
+                    'catatan'         => $this->request->getPost('catatan'),
+                    'file_foto'       => $pdnNameFile
                 ];
 
                 // Simpan Data
@@ -169,7 +207,7 @@ class SanksiController extends BaseController
                 $resMurid[$row->id] = $row->murid_nis.' - '.$row->murid_nama;
             }
         }
-        $this->data['id_murid'] = form_dropdown('id_murid' ,$resMurid, $data->id_murid, ['id'=>'id_murid', 'class'=>'form-control']);
+        $this->data['id_murid'] = form_dropdown('id_murid' ,$resMurid, $data->id_murid, ['id'=>'select1', 'class'=>'form-control']);
 
         $resPelanggaran = [];
         if (is_array($dataPelanggaran) || is_object($dataPelanggaran)) {
@@ -177,7 +215,7 @@ class SanksiController extends BaseController
                 $resPelanggaran[$row->id] = $row->pelanggaran_nama.' - ( '.$row->pelanggaran_point.' )';
             }
         }
-        $this->data['id_pelanggaran'] = form_dropdown('id_pelanggaran' ,$resPelanggaran, $data->id_pelanggaran, ['id'=>'id_pelanggaran', 'class'=>'form-control']);
+        $this->data['id_pelanggaran'] = form_dropdown('id_pelanggaran' ,$resPelanggaran, $data->id_pelanggaran, ['id'=>'select2', 'class'=>'form-control']);
 
         $this->data['id'] = [
             'name'    => 'id',
@@ -280,6 +318,24 @@ class SanksiController extends BaseController
         return redirect()->to($this->urlName)->with('success', 'Data berhasil dihapus.');
     }
 
+    public function berkas($idBerkas)
+    {
+        if ($idBerkas === null) {
+        // Redirect atau tampilkan error
+        return redirect()->to($this->urlName)->with('error', 'ID tidak ditemukan');
+        }
+
+        $this->data['pdn_title']        = 'Berkas Lampiran '.$this->pdnTitle;
+        $this->data['pdn_url']          = $this->urlName;
+        $this->data[$this->menuActive]  = 'active';
+
+        // Ambil Data sesuai ID Saknsi
+        $this->data['dataBerkas']       = $this->mainModel->getDataBerkas($idBerkas);
+
+        // Panggil View Berkas
+        return view($this->folderName.'/berkas', $this->data);
+    }
+
     // JOSN DATATBLES
     public function data_json()
     {
@@ -311,7 +367,10 @@ class SanksiController extends BaseController
                 $row[] = $pDn->pelanggaran_nama;
                 $row[] = $pDn->pelanggaran_point;
                 $row[] = '
-                    <a href="'.$this->urlName.'/edit/'.$pDn->id.'" class="btn btn-sm btn-success shadow-sm" title="Edit">
+                    <a href="'.$this->urlName.'/'.$pDn->id.'/berkas/" class="btn btn-sm btn-success shadow-sm mb-2" title="Berkas">
+                        <i class="fas fa-image"></i>
+                    </a>
+                    <a href="'.$this->urlName.'/edit/'.$pDn->id.'" class="btn btn-sm btn-success shadow-sm mb-2" title="Edit">
                         <i class="fas fa-pencil-alt"></i>
                     </a>
                     <form action="'.$this->urlName.'/hapus/'.$pDn->id.'" method="post" class="d-inline">

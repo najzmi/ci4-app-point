@@ -64,6 +64,9 @@
             <div class="row mb-4">
                 <div class="col">
                     <div class="card border border-secondary-subtle">
+                        <div class="card-header">
+                            <h6 class="m-0 font-weight-bold text-primary">Total Point Murid Per Kelas</h6>
+                        </div>
                         <div class="card-body">
                             <div class="chart-area">
                                 <canvas id="grafikKelas"></canvas>

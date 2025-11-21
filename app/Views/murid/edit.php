@@ -48,3 +48,15 @@
                 </div>
             </div>
         <?= $this->endSection();?>
+        <?= $this->section('contentcode') ?>
+        <script type="text/javascript" src="<?= base_url('assets/gudang/select2/select2.min.js'); ?>"></script>
+        <script type="text/javascript">
+            /*-- Select 2 --*/
+            $('#select1').select2({
+                    theme: 'bootstrap4',
+            });
+            $('#select2').select2({
+                    theme: 'bootstrap4',
+            });
+        </script>
+        <?= $this->endSection();?>

@@ -49,41 +49,58 @@
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider mt-3">
+            <!-- Heading -->
+            <div class="sidebar-heading">Interface</div>
             <li class="nav-item <?php echo isset($menumapel) ? $menumapel : ''; ?>">
                 <a class="nav-link pb-0" href="<?= base_url('mapel'); ?>">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-book-open"></i>
                     <span>Mapel</span></a>
             </li>
             <li class="nav-item <?php echo isset($menuguru) ? $menuguru : ''; ?>">
                 <a class="nav-link pb-0" href="<?= base_url('guru'); ?>">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-user-graduate"></i>
                     <span>Guru</span></a>
             </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider mt-3">
+            <!-- Heading -->
+            <div class="sidebar-heading">Interface</div>
             <li class="nav-item <?php echo isset($menukelas) ? $menukelas : ''; ?>">
                 <a class="nav-link pb-0" href="<?= base_url('kelas'); ?>">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-home fa-hotel"></i>
                     <span>Kelas</span></a>
             </li>
             <li class="nav-item <?php echo isset($menumurid) ? $menumurid : ''; ?>">
                 <a class="nav-link pb-0" href="<?= base_url('murid'); ?>">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-users fa-users"></i>
                     <span>Murid</span></a>
             </li>
             <li class="nav-item <?php echo isset($menupelanggaran) ? $menupelanggaran : ''; ?>">
                 <a class="nav-link pb-0" href="<?= base_url('pelanggaran'); ?>">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-server"></i>
                     <span>Pelanggaran</span></a>
             </li>
             <li class="nav-item <?php echo isset($menusanksi) ? $menusanksi : ''; ?>">
                 <a class="nav-link pb-0" href="<?= base_url('sanksi'); ?>">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-hashtag"></i>
                     <span>Sanksi</span></a>
             </li>
             <li class="nav-item <?php echo isset($menuremisi) ? $menuremisi : ''; ?>">
                 <a class="nav-link pb-0" href="<?= base_url('remisi'); ?>">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <i class="fas fa-fw fa-minus"></i>
                     <span>Remisi</span></a>
             </li>
+            <li class="nav-item <?php echo isset($menupindahkelas) ? $menupindahkelas : ''; ?>">
+                <a class="nav-link pb-0" href="<?= base_url('pindahkelas'); ?>">
+                    <i class="fas fa-fw fa-random"></i>
+                    <span>Pindah Kelas</span></a>
+            </li>
+            <!-- Divider -->
+            <hr class="sidebar-divider mt-3">
+            <!-- Heading -->
+            <div class="sidebar-heading">Laporan</div>
             <li class="nav-item <?= isset($menu_data_laporan[0]) ? $menu_data_laporan[0]: ''; ?>">
                 <a class="nav-link <?= isset($menu_data_laporan[0]) ? '': 'collapsed'; ?>" href="#" data-toggle="collapse" data-target="#menuDataLaporan" aria-expanded="true"
                     aria-controls="menuDataLaporan">
@@ -101,7 +118,10 @@
                 </div>
             </li>
 
-            <hr class="sidebar-divider d-none d-md-block mt-3">
+            <!-- Divider -->
+            <hr class="sidebar-divider mt-3">
+            <!-- Heading -->
+            <div class="sidebar-heading">MANAJEMEN USER</div>
             <li class="nav-item <?php echo isset($menuusers) ? $menuusers : ''; ?> ">
                 <a class="nav-link pb-0" href="<?= base_url('users'); ?>">
                     <i class="fas fa-fw fa-user"></i>

@@ -17,6 +17,7 @@
                                             <th width="5%">No</th>
                                             <th class="text-center">Nama Kelas</th>
                                             <th class="text-center">Sub Nama Kelas</th>
+                                            <th class="text-center">ID Kelas</th>
                                             <th width="12%">Aksi</th>
                                         </tr>
                                     </thead>
@@ -42,7 +43,7 @@
                     },
                     columnDefs: [
                         {
-                            "targets": [0,3],
+                            "targets": [0,3,4],
                             "sClass": "text-center",
                             "orderable": false,
                         },
@@ -52,5 +53,14 @@
                 function reloadTable(){
                     $('#dataTable').DataTable().ajax.reload();
                 }
+            </script>
+            <script>
+            $(document).on('click', '.copyBtn', function () {
+                let idText = $(this).siblings('.myIDKelas').text();
+
+                navigator.clipboard.writeText(idText).then(function () {
+                    $.notify(`ID (${idText}) berhasil disalin!`, "success");
+                });
+            });
             </script>
         <?= $this->endSection();?>

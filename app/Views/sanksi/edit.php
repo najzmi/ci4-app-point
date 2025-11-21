@@ -10,7 +10,7 @@
                 <div class="col">
                     <div class="card border shadow mb-4">
                         <div class="card-body">
-                            <?php   echo form_open($pdn_url.'/edit/'.$update_id, 'class="form" id="form"');
+                            <?php   echo form_open_multipart($pdn_url.'/edit/'.$update_id, 'class="form" id="form"');
                                     echo csrf_field();
                                     echo form_input($id);
                             ?>
@@ -48,4 +48,16 @@
                     </div>
                 </div>
             </div>
+        <?= $this->endSection();?>
+        <?= $this->section('contentcode') ?>
+        <script type="text/javascript" src="<?= base_url('assets/gudang/select2/select2.min.js'); ?>"></script>
+        <script type="text/javascript">
+            /*-- Select 2 --*/
+            $('#select1').select2({
+                    theme: 'bootstrap4',
+            });
+            $('#select2').select2({
+                    theme: 'bootstrap4',
+            });
+        </script>
         <?= $this->endSection();?>

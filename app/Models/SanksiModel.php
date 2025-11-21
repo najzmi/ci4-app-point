@@ -12,7 +12,7 @@ class SanksiModel extends Model
     protected $returnType       = 'object';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id_murid','id_pelanggaran', 'tanggal', 'nama_pelapor', 'catatan','active'];
+    protected $allowedFields    = ['id_murid','id_pelanggaran', 'file_foto', 'tanggal', 'nama_pelapor', 'catatan','active'];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -25,6 +25,9 @@ class SanksiModel extends Model
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
+
+    // CUSTOMAN
+    protected $tbViewSanksi = 'v_sanksi';
 
     /**
      * Hitung Jumlah Point
@@ -52,5 +55,16 @@ class SanksiModel extends Model
             ->where('sanksi.tanggal >=', $tgl_start)
             ->where('sanksi.tanggal <=', $tgl_end)
             ->first()->total_point ?? 0;
+    }
+
+    function getDataBerkas($idSanksi){
+        if (empty($idSanksi)) {
+            throw new \InvalidArgumentException('ID Sanksi harus diisi.');
+        }
+
+        return $this->db->table($this->tbViewSanksi)
+            ->where('id', $idSanksi)
+            ->get()
+            ->getRowArray();
     }
 }
