@@ -117,6 +117,5 @@ $routes->group('pointlebih', ['filter'=>'pdnislogin'], function($routes) {
 // PINDAH KELAS
 $routes->group('pindahkelas', ['filter'=>'pdnislogin'], function($routes) {
     $routes->get('/', 'PindahKelasController::index');
-    $routes->post('data_json', 'PindahKelasController::data_json');
-    $routes->get('cetak', 'PindahKelasController::cetak');
+    $routes->post('proses_pindah', 'PindahKelasController::proses_pindah');
 });
